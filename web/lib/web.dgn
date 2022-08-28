@@ -1,0 +1,24 @@
+
+
+include "globals.dgn"
+include "functions.dgn"
+include "prepare.dgn"
+include "application.dgn"
+include "page.dgn"
+include "scriptfunctions.dgn"
+include "stylefunctions.dgn"
+include "pagebuffer.dgn"
+include "html2pdf.dgn"
+include "bootstrappage.dgn"
+include "tailwindpage.dgn"
+include "webpage.dgn"
+include "bootstrapwebpage.dgn"
+include "tailwindwebpage.dgn"
+include "htmlpage.dgn"
+include "objsbase.dgn"
+include "newobjectsfunctions.dgn"
+include "webpageelementsclasses.dgn"
+include "webfunctions.dgn"
+
+showln "X-Powered-By: Dragon Native "+ Version()
+
