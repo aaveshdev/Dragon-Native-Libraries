@@ -1,0 +1,33 @@
+
+
+Package System.Web 
+
+	Class WebPage extends Application {
+
+		aObjs = []  
+
+		AddAttribute(this,aObjsAttributes)
+
+		StartHtml()
+		
+		func braceend(){
+			WebPrint( cCookies + GetHTMLStart() +"<!DOCTYPE html>" + WindowsNL() +
+			newline+ '<html lang="en">' + newline +
+			"<head>"+newline+CHAR(9)+"<title>"+Title+"</title>"+newline+
+			"<meta charset='UTF-8'>" + newline+
+			newline+CHAR(9)+scriptlibs()+newline )			
+			if cCSS != NULL
+				WebPrint( Char(9)+"<style>"+newline+CHAR(9)+CHAR(9)+cCSS+newline+Char(9)+"</style>"+newline )
+			end
+			WebPrint( newline+"</head>" + newline +
+			"<body"+ cBody + "> " + newline )
+			for x : aObjs {
+				WebPrint( x.getdata() + newline )
+			}
+			
+			WebPrint( newline + "</body>" + newline + "</html>" + newline )
+		}
+
+	}
+
+#}

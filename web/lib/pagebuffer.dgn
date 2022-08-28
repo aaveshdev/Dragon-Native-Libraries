@@ -1,0 +1,9 @@
+
+
+Package System.Web
+
+	Class PageBuffer extends Page{
+		Func BraceEnd(){
+		
+		}	
+	}

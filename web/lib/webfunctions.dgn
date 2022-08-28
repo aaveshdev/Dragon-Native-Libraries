@@ -1,0 +1,43 @@
+
+
+func header(cVal){
+	showln cVal
+}
+
+func redirect(cVal){
+	header("Location: "+cVal)
+}
+
+func getRequest(cVal){
+	return aPageVars[cVal]
+}
+
+func getUploadFileName(cVal){
+	for(i=1 to len(aPageVars)){
+	    if( aPageVars[i][1] == cVal ){
+	    	if(len(aPageVars[i]) < 3){
+	    		return Null
+	    	else
+	    		return aPageVars[i][3]	
+	      	}
+	    	
+	    }
+
+	}
+	return NULL
+}
+
+func getFileContentType(cVal){
+	for(i=1 to len(aPageVars)){
+	    if( aPageVars[i][1] == cVal){
+	    if(len(aPageVars[i]) < 3){
+	    		return Null
+	    	else
+	      return aPageVars[i][4]
+	      }
+	    else
+	     return null
+	    }
+
+	}
+}

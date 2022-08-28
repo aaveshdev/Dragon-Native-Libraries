@@ -1,0 +1,334 @@
+
+Package System.Web 
+
+	Class H1 extends ObjsBase {
+		Func braceend() {
+			cOutput += newline+'<h1'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h1>" + newline
+			cOutput = TabMLString(cOutput)
+	} 
+	}
+
+	Class H2 extends ObjsBase {
+		Func braceend() {
+			cOutput += newline+'<h2'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h2>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class H3 extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<h3'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h3>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class H4 extends ObjsBase  {
+		Func braceend(){
+			cOutput += newline+'<h4'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h4>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class H5 extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<h5'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h5>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class H6 extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<h6'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</h6>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class p extends ObjsBase  {
+		Func braceend(){
+			cOutput += newline+'<p'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</p>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+
+	Class Link extends ObjsBase{
+		title  link
+		Func braceend(){
+			cOutput = newline+GetTabs() + "<a href='" + Link + "'> "+ Title + " </a> " + newline			
+		}
+	}
+
+	Class NewLineTag extends ObjsBase {
+		cOutput = GetTabs() + "<br />"
+	}
+
+	Class Div extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<div'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</div>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+
+	
+
+	Class Form extends ObjsBase {
+		action method enctype target
+		Func braceend(){
+			cOutput += newline+'<form'
+			addattributes()
+			elementattribute(:action)
+			elementattribute(:method)
+			elementattribute(:target)
+			elementattribute(:enctype)
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</form>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+
+	}
+
+	Class Input extends ObjsBase {
+		type min max checked=false
+		Func braceend(){
+			cOutput += newline+'<input'			
+			elementattribute(:type)
+			addattributes()			
+			elementattribute(:min)
+			elementattribute(:max)
+			if checked
+				cOutput += " checked"
+			end
+			AddStyle()
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class TextArea extends ObjsBase {
+		rows cols
+		Func braceend(){
+			cOutput += newline+'<textarea'
+			addattributes()
+			elementattribute(:rows)
+			elementattribute(:cols)
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</textarea>" + newline
+			cOutput = TabMLString(cOutput)
+			}
+		}
+
+	Class ComboBox extends ObjsBase {
+		multiple
+		Func braceend(){
+
+			cOutput += newline+'<select'
+			addattributes()
+			elementattribute(:multiple)
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</select>" + newline
+			cOutput = TabMLString(cOutput)
+
+		}
+	}
+
+	Class Option extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<option'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</option>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Image extends ObjsBase {
+		src alt 
+		Func braceend(){
+			cOutput += newline+'<img'
+			addattributes()
+			elementattribute(:src)
+			elementattribute(:alt)
+			AddStyle()
+			getobjsdata()
+			cOutput = TabMLString(cOutput)
+			}
+	 }
+
+	Class UL extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<ul'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</ul>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class LI extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<li'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</li>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Table extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<table'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</table>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class TR extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<tr'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</tr>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class TD extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<td'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</td>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class TH extends ObjsBase {
+		Func braceend(){
+			cOutput += newline+'<th'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</th>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Audio extends ObjsBase {
+		src type 
+		Func braceend(){
+			cOutput += newline+'<audio controls'
+			addattributes()
+			cOutput += '> <source '
+			elementattribute(:src)
+			elementattribute(:type)
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"> Your browser does not support the audio element. </audio>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Video extends ObjsBase {
+		src type
+		Func braceend(){
+			cOutput += newline+'<video controls'
+			addattributes()
+			elementattribute(:width)
+			elementattribute(:height)
+			cOutput += '> <source '
+			elementattribute(:src)
+			elementattribute(:type)
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"> Your browser does not support the video tag. </video>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class NAV extends ObjsBase{
+		Func braceend(){
+			cOutput += newline+'<nav'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</nav>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Span extends ObjsBase{
+		Func braceend(){
+			cOutput += newline+'<span'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</span>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Button extends ObjsBase {
+		Func braceend() {
+			cOutput += newline+'<button'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</button>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+
+	Class Center extends ObjsBase{
+		Func braceend(){
+			cOutput += newline+'<center'
+			addattributes()
+			AddStyle()
+			getobjsdata()
+			cOutput += newline+"</center>" + newline
+			cOutput = TabMLString(cOutput)
+		}
+	}
+

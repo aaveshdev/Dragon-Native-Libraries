@@ -1,0 +1,11 @@
+
+Package System.Web
+
+	class HtmlPage extends WebPage
+	{
+		NoOutput()
+	}
+
+	class HtmlPageFunctions extends Page{
+		NoOutput()
+	}

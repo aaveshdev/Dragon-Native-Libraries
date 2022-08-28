@@ -1,0 +1,7 @@
+
+
+Package System.Web
+
+	Class BootStrapPage extends Page{
+		lBootstrap = True
+	}

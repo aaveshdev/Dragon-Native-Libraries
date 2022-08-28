@@ -1,0 +1,526 @@
+
+Package System.Web
+
+	Class Page extends Application{
+		
+		
+
+		Blank = false
+
+		Func BlankPage(){
+			Blank = true
+			emptyhtml()
+		}
+
+
+		Func TemplatePage(){
+			StartHtml()	
+		}
+		
+			
+	
+		
+
+		Func text(x){
+			if isstring(x)
+				cOutput += newline+GetTabs() + htmlspecialchars(x)
+
+			elif isnumber(x)
+				cOutput += newline+GetTabs() + htmlspecialchars(string(x))
+			end
+		}
+
+
+		Func html(x){
+			cOutput += x
+		}
+
+		Func h1(x){
+			html( GetTabs()+"<h1>" + x + "</h1>" )
+		}
+
+		Func h2(x){
+			html( GetTabs()+"<h2>" + x + "</h2>" )
+		}
+
+		Func h3(x){
+			html( GetTabs()+"<h3>" + x + "</h3>" )
+		}
+
+		Func h4(x){
+			html( GetTabs()+"<h4>" + x + "</h4>" )
+		}
+
+		Func h5(x){
+			html( GetTabs()+"<h5>" + x + "</h5>" )
+		}
+
+		Func h6(x){
+			html( GetTabs()+"<h6>" + x + "</h6>" )
+		}
+
+		Func p(aPara){
+			html( newline+GetTabs()+'<p ' )
+			addattributes(aPara)
+			html( '>' )
+			if aPara[:text] != NULL
+				html( newline+GetTabs()+aPara[:text] )
+			end
+			html( newline+GetTabs()+'</p>' )
+		}
+
+		Func newlinetag(){
+			cOutput += newline+GetTabs()+"<br />"
+		}
+
+		
+		Func addattributes(aPara){
+
+			aList = [ :class,:id,:name,:align,:style,:dir,:value,:onclick,:oncontextmenu,
+				  :ondblclick,:onmousedown,:onmouseenter,:onmouseleave,
+				  :onmousemove,:onmouseover,:onmouseout,:onmouseup,
+				  :onkeydown,:onkeypress,:onkeyup,:onabort,:onbeforeunload,
+				  :onerror,:onhashchange,:onload,:onpageshow,:onpagehide,
+				  :onresize,:onscroll,:onunload,:onblur,:onchange,:onfocus,
+				  :onfocusin,:onfocusout,:oninput,:oninvalid,:onreset,
+				  :onsearch,:onselect,:onsubmit,:ondrag,:ondragend,:ondragenter,
+				  :ondragleave,:ondragover,:ondragstart,:ondrop,:oncopy,:oncut,
+				  :onpaste,:onafterprint,:onbeforeprint,:oncanplay,
+				  :oncanplaythrough,:ondurationchange,:onemptied,:onended,
+				  :onloadeddata,:onloadedmetadata,:onloadstart,
+				  :onpause,:onplay,:onplaying,:onprogress,:onratechange,
+				  :onseeked,:onseeking,:onstalled,:onsuspend,:ontimeupdate,
+				  :onvolumechange,:onwaiting,:animationend,:animationiteration,
+				  :animationstart,:transitionend, :onmessage, :onopen, 
+				  :onmousewheel, :ononline, :onoffline, :onpostate, :onshow,
+				  :onstorage, :ontoggle, :onwheel, :ontouchcancel, :ontouchend,
+				  :ontouchmove, :ontouchstart ]
+			
+			for t  : aPara
+				for x : aList					
+					if t[1] = x
+						html( ' ' + lower(t[1]) + '="'+t[2]+'"')
+						break
+					end
+				end
+			end
+			
+		}		
+	
+			
+		Func link(aPara){
+			html( newline + GetTabs() + "<a href='" )
+			if aPara[:url] != NULL
+				cOutput += aPara[:url] + "'"
+			else
+				cOutput += "'"
+			end
+			addattributes(aPara)
+			cOutput += "> "
+			if aPara[:title] != NULL
+				cOutput += aPara[:title]
+			end
+			html( " </a> " )
+		}
+
+		Func Image(aPara){
+			cOutput += newline+GetTabs()+'<img'
+			addattributes(aPara)
+			if aPara["url"] != NULL
+				cOutput += ' src="'+aPara["URL"]+'"'
+			end
+			if aPara["alt"] != NULL
+				cOutput += ' alt="'+aPara["Alt"]+'"'
+			end
+			cOutput += '> '
+		}
+
+		Func button(aPara){
+			cOutput += newline+GetTabs()+'<input type="button"'
+			addattributes(aPara)
+			if aPara[:value] != NULL
+				cOutput += ' value="'+aPara[:value]+'"'
+			end
+			cOutput += '>'
+		}
+
+		Func buttonlink (aPara){
+			cOutput += newline+GetTabs()+'<input type="button"'
+			addattributes(aPara)
+			if aPara[:link] != NULL
+				cOutput += ' onclick="window.location.href = '+"'"+aPara[:link]+"'"+'"'
+			end
+			if aPara[:value] != NULL
+				cOutput += ' value="'+aPara[:value]+'"'
+			end
+			cOutput += '>'
+		}
+
+		Func textbox (aPara){
+			cOutput += newline+GetTabs()+'<input type="'
+			if aPara[:type] != NULL
+				cOutput += aPara[:type] + '"'
+			else
+				cOutput += 'text"'
+			end
+			addattributes(aPara)
+			cOutput += ' >' + newline
+		}
+
+		Func editbox (aPara){
+			cOutput += newline+GetTabs()+'<textarea '
+			if aPara[:rows] != NULL
+				cOutput += ' rows="'+ aPara[:rows] + '"'
+			else
+				cOutput += ' rows="4"'
+			end
+			if aPara[:cols] != NULL
+				cOutput += ' cols="'+ aPara[:cols] + '"'
+			else
+				cOutput += ' cols="50"'
+			end
+			addattributes(aPara)
+			cOutput += ' >' + newline 
+			TabPush()
+			if aPara[:value] != NULL
+				cOutput += aPara[:value]
+			end
+			TabPOP()
+			cOutput += newline+GetTabs()+'</textarea>' + newline
+		}
+
+		Func combobox (aPara){
+			TabPush()
+			cOutput += newline+GetTabs()+'<select '
+			addattributes(aPara)
+			cOutput += ">" + newline
+			if islist(aPara[:items])
+
+				for x : aPara[:items]
+  					cOutput += newline+GetTabs()+'<option>'+x+'</option>'
+				end
+				TabPOP()
+			end
+			cOutput += newline+GetTabs()+"</select>" + newline
+		}
+
+		Func listbox(aPara){
+			cOutput += newline+GetTabs()+'<select '
+			addattributes(aPara)
+			cOutput += "multiple='multiple' >" + newline
+			if islist(aPara[:items])
+				for x : aPara[:items]	
+  					cOutput += newline+GetTabs()+'<option>'+x+'</option>'
+				end
+			end
+			cOutput += "</select>" + newline
+		}
+
+		Func tagstart (x,aPara){
+			html( newline + GetTabs() + '<'+x+' ' )
+			addattributes(aPara)
+			html( '>' + newline )
+			TabPush()
+		}
+
+		Func tagend (x){
+			TabPOP()
+			html( newline + GetTabs() +'</'+x+'>' + newline )
+		}
+
+		Func ulstart (aPara){
+			tagstart("ul",aPara)
+		}
+
+		Func ulend(){
+			tagend("ul")
+		}
+
+		Func listart (aPara){
+			tagstart("li",aPara)
+		}
+
+		Func liend(){
+			tagend("li")
+		}
+
+		Func List2UL (aList){
+			ulstart([])
+				for x = 1 to len(aList)
+					listart([])
+						text(aList[x])
+					liend()
+				end
+			ulend()	
+		}
+
+		Func divstart (aPara){
+			html( newline + GetTabs() + '<div ' )
+
+			addattributes(aPara)
+
+			html( '>' + newline )
+
+			TabPush()
+
+		}
+
+		Func centerstart (aPara){
+			html( newline + GetTabs() + '<center ' )
+
+			addattributes(aPara)
+
+			html( '>' + newline )
+
+			TabPush()
+
+		}
+
+		Func navstart (aPara){
+			html( newline + GetTabs() + '<nav ' )
+			addattributes(aPara)
+			html( '>' + newline )
+			TabPush()
+		}
+
+		Func spanstart (aPara){
+			html( newline + GetTabs() + '<span ' )
+			addattributes(aPara)
+			html( '>' + newline )
+			TabPush()
+		}
+
+
+		Func boxstart(){
+
+			html( newline + GetTabs() +'<div style="width:100% ; height:30px ; color: yellow ; background-color:black">' + newline)
+			TabPush()
+
+		 }
+
+		Func divend(){
+			TabPOP()
+			html( newline + GetTabs() +'</div>' + newline )
+		}
+
+
+		Func centerend(){
+			TabPOP()
+			html( newline + GetTabs() +'</center>' + newline )
+		}
+
+		Func navend(){
+			TabPOP()
+			html( newline + GetTabs() +'</nav>' + newline )
+		}
+
+		Func spanend(){
+			TabPOP()
+			html( newline + GetTabs() +'</span>' + newline )
+		}
+
+		Func boxend(){
+			divend()		
+		}
+
+		Func formstart (x){
+			if x = ""
+				html( newline + GetTabs() +"<form>" + newline )
+			else
+				html( newline + GetTabs() +'<form action="' + x + '">' + newline )
+			end
+			TabPush()
+		}
+
+
+		Func formpost (x){
+			if x = ""
+				html( newline + GetTabs() +"<form>" + newline )
+			else
+				html( newline + GetTabs() +'<form action="' + x + '" method="post">' + newline )
+			end
+			TabPush()
+		}
+
+		Func formend(){
+			TabPOP()
+			html( newline + GetTabs() +"</form>" + newline )
+		}
+
+		Func submit (aPara){
+			cOutput += newline+GetTabs()+'<input type="submit" '
+			addattributes(aPara)
+			cOutput += '>' + newline
+		}
+		
+		Func hidden (name,value){
+			cOutput += newline+GetTabs()+'<input type="hidden" name="' + name + '" value="' + value + '">' + newline
+		}
+
+		Func formupload (x){
+			if x = ""
+				cOutput += newline+GetTabs()+"<form>" + newline
+			else
+				cOutput += newline+GetTabs()+'<form action="' + x + '" method="post" enctype="multipart/form-data">' + newline
+			end
+			TabPush()
+		}
+		
+		Func uploadfile (x){
+			cOutput += newline+GetTabs()+'<input type="file" name="'+x+'"/>'
+		}
+
+		Func Video (aPara){
+			cOutput += newline+GetTabs()+'<video '
+			addattributes(aPara)
+			if aPara[:width] != NULL
+				cOutput += ' width="'+aPara[:width]+'"'
+			end
+			if aPara[:height] != NULL
+				cOutput += ' height="'+aPara[:height]+'"'
+			end
+			cOutput +=' controls>' 
+			if aPara[:file] != NULL
+				cOutput += '<source src="'+aPara[:file]+'"'
+			end
+			if aPara[:type] != NULL
+				cOutput += ' type="'+aPara[:type]+'"' 
+			end
+			cOutput += '> Your browser does not support the video tag. </video>' 
+		}
+
+		Func Audio (aPara){
+			cOutput += newline+GetTabs()+'<audio controls' 
+			addattributes(aPara)
+			cOutput += '> <source '
+			if aPara[:file] != NULL
+				cOutput += ' src="'+aPara[:file]+'"'
+			end
+			if aPara[:type] != NULL
+				cOutput += ' type="'+aPara[:type]+'"' 
+			end
+			cOutput += '> Your browser does not support the audio element. </audio>'
+			}
+
+		Func GetColor (aPara){
+			cOutput += newline+GetTabs()+'<input' 
+			addattributes(aPara)
+			if aPara[:value] != NULL
+				cOutput += ' value="' + aPara[:value] + '"'
+			else
+				cOutput += ' value="#ff0000"'
+			end				
+			cOutput += 'onchange="clickColor(0, -1, -1, 5)" type="color">'
+		}
+
+		Func Radio (aPara){
+			cOutput += newline+GetTabs()+'<input type="radio"'
+			addattributes(aPara)
+			if aPara[:value] != Null
+				cOutput += ' value="'+aPara[:value]+'"'
+			end
+			if aPara[:status] != NULL
+				cOutput += " checked"
+			end
+			cOutput += '>'
+			if aPara[:text] != NULL
+				cOutput += aPara[:text]
+			end
+		}
+
+		Func Checkbox (aPara){
+			cOutput += newline+GetTabs()+'<input type="checkbox"'
+			addattributes(aPara)
+			if aPara[:value] != Null
+				cOutput += ' value="'+aPara[:value]+'"'
+			end
+			if aPara[:status] != NULL
+				cOutput += " checked"
+			end
+			cOutput += '>'
+			if aPara[:text] != NULL
+				cOutput += aPara[:text]
+			end
+		}
+
+		Func Spinner (aPara){
+			cOutput += newline+GetTabs()+'<input type="number"'
+			addattributes(aPara)
+			if aPara[:min] != NULL
+				cOutput += ' min="'+aPara[:min]+'"'
+			end
+			if aPara[:max] != NULL
+				cOutput += ' max="'+aPara[:max]+'"'
+			end
+			cOutput += '>' + newline
+		}
+
+		Func Slider (aPara){
+			cOutput += newline+GetTabs()+'<input type="range"'
+			addattributes(aPara)
+			if aPara[:min] != NULL
+				cOutput += ' min="'+aPara[:min]+'"'
+			end
+			if aPara[:max] != NULL
+				cOutput += ' max="'+aPara[:max]+'"'
+			end
+			cOutput += '>' + newline
+		}
+
+		Func tablestart (aPara){
+			cOutput += newline+GetTabs()+'<table '
+			addattributes(aPara)
+			cOutput += '>'
+			TabPush()
+		}
+
+		Func tableend(){
+			TabPOP()
+			cOutput += newline+GetTabs()+'</table>'
+		}
+
+		Func rowstart (aPara){
+			cOutput += newline+GetTabs()+'<tr '
+			addattributes(aPara)
+			cOutput += '>'
+			TabPush()
+		}
+
+		Func rowend(){
+			TabPOP()
+			cOutput += newline+GetTabs()+'</tr>'	
+		}	
+
+		Func cellstart (aPara){
+			TabPush()
+			cOutput += newline+GetTabs()+'<td '
+			addattributes(aPara)
+			cOutput += '>'
+		}
+
+		Func cellend(){
+			cOutput += newline+GetTabs()+"</td>" + newline
+			TabPOP()
+		}
+
+		Func headerstart (aPara){
+			cOutput += newline+GetTabs()+'<th '
+			addattributes(aPara)
+			cOutput += '>'
+			TabPush()
+		}
+
+		Func headerend(){
+			TabPOP()
+			cOutput += newline+GetTabs()+"</th>" + newline
+		}
+
+		Func braceend(){
+		 if Blank == false
+			print() 
+		else
+		  blankprint()
+		 end
+		}
+
+	}

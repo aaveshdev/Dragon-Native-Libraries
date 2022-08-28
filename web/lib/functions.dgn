@@ -1,0 +1,107 @@
+
+
+select System.Web 
+
+Func GetaPageVars(){
+	return aPageVars 
+}
+
+Func Gethtmlcssattributes(){
+	return htmlcssattributes
+}
+
+Func GetaObjsAttributes(){
+	return aObjsAttributes
+}
+
+Func LoadVars(){
+	cInput2 = ""
+	if sysget("REQUEST_METHOD") = NULL
+		# The Web Library is not called from Web Application (From the Browser)
+		return 
+	end
+	New Application
+	{
+	    if sysget("REQUEST_METHOD") = "GET"
+			cInput = sysget("QUERY_STRING")
+			
+		else
+			if sysget("CONTENT_LENGTH") > 0
+				
+				cInput = input(sysget("CONTENT_LENGTH"))
+				if sysget("QUERY_STRING") != null or sysget("QUERY_STRING") != ""
+					cInput2 = sysget("QUERY_STRING")
+					
+					cInput += "&" +cInput2
+
+				end
+			else
+				cInput = ""
+			end
+		end
+		
+		aPageVars = decode(cInput)
+		aArray = getcookies()
+		for x : aArray
+			aPageVars+x
+		end
+	}
+
+	return cInput
+}
+
+Func WebPage(){ return new WebPage }
+
+Func BootStrapWebPage(){ return new BootStrapWebPage }
+
+Func TailwindWebPage(){ return new TailwindWebPage }
+
+Func htmlspecialchars (cStr){
+	cResult = ""
+	if isstring(cStr) and len(cStr) > 0
+		for x : cStr
+			if x = '&'  cResult += '&amp;'
+			elif x = '"' cResult += '&quot;'
+			elif x = "'" cResult += '&#039;'
+			elif x = '<' cResult += '&lt;'
+			elif x = '>' cResult += '&gt;'
+			elif x = ' ' cResult += '&nbsp;'
+			else 	    cResult += x
+			end
+		end
+	end
+	return cResult
+}
+
+Func Alert (cMessage){
+	New Page
+	{
+		script( "document.onready = function() { alert(" +'"' + cMessage + '"' + ") }" )
+	}
+}
+
+func HTML2PDF (filepath,filefolder,cStr){
+
+	cTempName = WL_JustFileName(tempname())
+	cFileName = filepath+cTempName
+	cHTML = cFileName + ".html"
+	cPDF =  cFileName + ".pdf"
+	write(cHTML,cStr)
+	system("wkhtmltopdf " + cHTML + " " + cPDF)
+	New Page 
+	{  
+		text(cPDF)
+		script(scriptredirection(filefolder+cTempName+".pdf"))  
+	}
+}
+
+func WL_JustFileName (cFile){
+	for x = len(cfile) to 1 step -1{
+		if cfile[x] = "\" or cfile[x] = "/"
+			cfile = substr(cfile,x+1)
+			break
+		end
+	}
+	return cFile 
+}
+

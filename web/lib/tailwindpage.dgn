@@ -1,0 +1,5 @@
+Package System.Web
+
+	Class TailwindPage extends Page{
+		lTailwind= True
+	}

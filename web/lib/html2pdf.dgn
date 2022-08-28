@@ -1,0 +1,11 @@
+
+Package System.Web
+
+	Class HTML2PDF extends page {
+		filepath filefolder
+		Func BraceEnd(){
+			HTML2PDF(filepath,filefolder,cOutput)
+		}
+
+	}
+
