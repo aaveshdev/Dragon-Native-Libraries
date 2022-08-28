@@ -1,0 +1,7 @@
+include "lib/template.dgn"
+include package "lib/web.dgn" 
+
+# Get a copy from the required global variables
+aPageVars 		= GetaPageVars()
+htmlcssattributes 	= Gethtmlcssattributes()
+aObjsAttributes 	= GetaObjsAttributes()
