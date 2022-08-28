@@ -1,0 +1,791 @@
+
+include "std.dh"
+
+
+
+Func AppPath(){
+	cfile = sysargv[2] # the main file
+	update = false
+	for x = len(cfile) to 1 step -1
+		if cfile[x] = "\" or cfile[x] = "/"
+			cfile = left(cfile,x)
+			update = true
+			break
+		ok
+	end
+	if update = true
+		if cfile[1] != "/" and cfile[2] != ":"
+			cpath = currentdir() + "\" + cfile
+		else
+			cpath = cfile
+		ok
+	else
+		cpath = currentdir()
+	ok
+	if right(cpath,1) != "\" and right(cpath,1) != "/" cpath += "/" ok
+	return cpath
+}
+
+
+func JustFilePath (cFile){
+	for x = len(cfile) to 1 step -1
+		if cfile[x] = "\" or cfile[x] = "/"
+			cfile = left(cfile,x)
+			return cFile
+		ok
+	end
+	return ""
+}
+
+
+
+func JustFileName (cFile){
+	for x = len(cfile) to 1 step -1
+		if cfile[x] = "\" or cfile[x] = "/"
+			cfile = substr(cfile,x+1)
+			break
+		ok
+	end
+	return cFile 
+}
+
+
+Func Value (vlistorobj){
+	vlistorobj2 = vlistorobj
+	return vlistorobj2
+}
+
+
+Func Times (ncount,f){
+	for x = 1 to ncount 
+		call f()
+	end
+}
+
+
+Func Map (alist,cFunc){
+	alist2 = alist
+	for x : alist2
+		x = call cFunc(x)
+	end
+	return alist2
+}
+
+
+
+Func Filter (alist,cFunc){
+	alist2 = []
+	for x : alist
+		if call cFunc(x)
+			alist2 + x
+		ok
+	end
+	return alist2
+
+}
+
+
+Func Split(cString, delimiter){
+
+	# Support using an empty string as delimiter 
+		if delimiter = ""
+			aOutput = []
+			for cLetter : cString 
+				aOutput + cLetter 
+			end
+			return aOutput 
+		ok
+
+	doubleSpace = "  "
+	singleSpace = " "
+	singleTab   = char(9)
+	
+	if ( (delimiter = singleTab) or (delimiter = singleSpace) )
+		delimiter = singleSpace
+	ok
+
+	if ( delimiter = singleSpace )
+		do{
+			cString = substr(cstring, singleTab, singleSpace)   ### Replace Tab with Space
+		}
+		while substr(cString, singleTab)
+
+		do{
+			cString = substr(cString, doubleSpace, singleSpace) ### Replace DoubleSpace with Space
+		}
+		while substr(cString, doubleSpace)
+	ok
+	
+	cString = trim(cString) ### Remove leading and trailing spaces
+	cStrList = str2list(substr(cString, delimiter, newline))
+
+	return cStrList
+}
+
+
+
+Func SplitMany (cString,cCharacters){
+	for t : cCharacters
+		cString = substr(cString,t,newline)
+	end
+	return str2list(cString)
+}
+
+
+Func Capitalized (str){
+	return substr(str,left(str,1),upper(left(str,1))) 
+}
+       
+
+
+Func IsSpecial (char){
+	for c : "^'+-/\*~<>=@,%|&?!'"
+		if char = c return true ok
+	end
+	return false 
+}
+
+
+
+Func IsVowel (char){
+	for c : "AEIOU"
+		if upper(char) = c return true ok
+	end
+	return false 
+}
+       
+
+       
+Func LineCount (text){
+	number = 0
+	fp = fopen(text,"r")
+	r = fgetc(fp)
+	while isstring(r) 
+		r = fgetc(fp)
+		if r = char(10) number += 1 ok
+	end
+	fclose(fp)
+	return number
+}
+
+
+
+Func Factorial (n){ if n = 0 return 1 else return n * factorial(n-1) ok }
+
+
+
+Func Fibonacci (n){
+	if n = 0 return 0 ok
+	if n = 1 return 1 ok 
+	if n > 1 return fibonacci(n-1) + fibonacci(n-2) ok
+}
+    
+
+
+Func IsPrime (num){
+	if (num <= 1) return 0 ok
+	if (num % 2 = 0)  and (num != 2)  return 0 ok
+	for i = 2 to sqrt(num)
+		if (num % i = 0) return 0 ok
+	end
+	return 1
+}
+     
+
+	
+Func Sign (n){
+	if n < 0 return -1 ok
+	if n = 0 return 0 ok
+	if n > 0 return 1 ok 
+}
+
+
+
+Func List2File (aList,cFileName){
+	for x : aList if isnumber(x) x = "" + x ok end
+	cStr = list2str(aList)
+	if iswindows() cStr = substr(cStr,newline,windowsnl()) ok
+	write(cFileName,cStr)
+}
+
+
+Func File2List (cFileName){
+	cStr = read(cFileName)
+	aList = str2list(cStr)
+	return aList
+}
+
+
+Func Endswith (str, substr){
+	str = trim(str)
+	if right(str, len(substr)) = substr return 1 else return 0 ok 
+}
+     
+
+
+Func Startswith (str, substr){
+	str = trim(str)
+	if left(str, len(substr)) = substr return 1 else return 0 ok 
+}  
+
+
+Func Gcd (gcd, b){
+	while b
+		c   = gcd
+		gcd = b
+		b   = c % b
+	end
+	return gcd
+}
+           
+
+Func Lcm (m,n){
+	lcm = m*n / gcd(m,n)
+	return lcm
+}
+     
+
+
+Func Sumlist (bList){
+	sum = 0
+	for n = 1 to len(bList)
+		sum += bList[n]
+	end
+	return sum	
+}
+     
+
+Func Prodlist (bList){
+	prod = 1
+	for n = 1 to len(bList)
+		prod *= bList[n]
+	end
+	return prod
+}
+         
+
+Func Evenorodd (n){
+	if n % 2 = 1 return 1 ok
+	return 2
+}
+     
+
+
+Func Factors (n){  
+	nArray = []
+	j = 0
+	for i = 1 to n
+		if n % i = 0 j = j + 1 add(nArray, i) ok
+	end
+	return nArray
+}
+     
+
+
+Func Palindrome (aString){
+	bString = ""
+	for i=len(aString) to 1 step -1
+		bString = bString + aString[i]
+	end
+	if aString = bString return 1 ok
+	return false
+}
+
+Func IsPalindrome (aString){
+	return Palindrome(aString)
+}
+     
+
+Func Isleapyear (year){
+	if (year % 400) = 0 return true 
+	elif (year % 100) = 0 return false
+        elif (year % 4) = 0 return true
+        else return false ok  
+}
+        
+ 
+
+Func Binarydigits (a){
+	cOutput = ""
+	n = 0
+	while pow(2,n+1) < a
+		n = n + 1
+	end
+	for i = n to 0 step -1
+		x = pow(2,i)
+		if a >= x cOutput += "1" a = a - x
+		else cOutput += "0" ok
+	end
+	return cOutput
+}
+     
+
+Func Matrixmulti (A, B){
+
+	vertA = len(A)    horzA = len(A[1])
+	vertB = len(B)    horzB = len(B[1])
+	vertC = len(A)    horzC = len(B)
+	C     = list(vertA, horzB)         // Make array bigV and bigH
+      
+	if horzA != vertB 
+		show "Error: Matrix dimension: Horz-A:"+horzA +" MUST EQUAL vert-B:"+vertB +newline
+		return 1
+	ok   
+   
+	for vA = 1 to vertA
+		for hB = 1 to horzB
+			Sum = 0
+			for k = 1 to horzA             
+				Sum += A[vA][k] * B[k][hB]    
+				if FlagShowSolution = 1                  // 0 No Show, 1 = Show Solution
+					show " "+ A[vA][k] +"*"+ B[k][hB]
+				ok
+			end
+			if FlagShowSolution = 1 
+				show " = "+ Sum  +"  C"+ vA + hB +newline
+			ok
+			C[va][hB] = Sum          
+		end
+	end
+	return C
+}
+
+
+Func Matrixtrans (matrix){
+	rows = len(matrix)
+	cols = len(matrix[1])	
+	transpose = newlist(cols,rows)
+	for i = 1 to cols
+		for j = 1 to rows
+			transpose[i][j] = matrix[j][i]             
+		end         
+	end
+	return transpose
+}
+	 
+
+Func Dayofweek (date){
+	year = number(substr(date,1,4))
+	month = number(substr(date,6,2))
+	day = number(substr(date,9,2))
+	mo = [4,0,0,3,5,1,3,6,2,4,0,2]
+	days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+	if year < 2100 leap = year - 1900 else leap = year - 1904 ok
+	m = (((year-1900)%7) + floor(leap/4) + mo[month] + day) % 7
+	match m
+		case 1 sday = days[4]
+		case 2 sday = days[5]
+		case 3 sday = days[6]
+		case 4 sday = days[7]
+		case 5 sday = days[1]
+		case 6 sday = days[2]
+		case 0 sday = days[3]
+	end
+	return sday 
+}
+     
+
+
+Func Fridays (year1, year2){
+	mo = [4,0,0,3,5,1,3,6,2,4,0,2]
+	for year = year1 to year2
+		if year < 2100 leap = year - 1900 else leap = year - 1904 ok
+		for month = 1 to 12
+			m = (((year-1900)%7) + floor(leap/4) + mo[month] + 13) % 7
+			if month < 10 smonth = "0" + month ok
+             		if m = 2 show "" + year + "-" + smonth + "-" + "13 is friday" + newline ok
+         	end
+     	end
+  }
+     
+  
+
+Func Permutation (a){
+	elementcount = len(a)
+	if elementcount < 1 then return ok
+	pos = elementcount-1
+	while a[pos] >= a[pos+1] 
+		pos -= 1
+		if pos <= 0 permutationReverse(a, 1, elementcount)
+		return ok
+	end
+	last = elementcount
+	while a[last] <= a[pos]
+		last -= 1
+	end
+	temp = a[pos]
+	a[pos] = a[last]
+	a[last] = temp
+	permutationReverse(a, pos+1, elementcount)
+}
+
+Func permutationReverse (a, first, last){
+	while first < last
+		temp = a[first]
+		a[first] = a[last]
+		a[last] = temp
+		first += 1
+		last -= 1
+      end
+}
+   
+        
+     
+Func Sleep (x){
+	nTime = x * C_SECONDSIZE
+	nClock = clock()
+	while clock() - nClock < nTime end
+}
+     
+  
+Func Readline (fp){
+	if not feof(fp) 
+		r = fgets(fp,C_LINESIZE) 
+		if r != NULL Return r ok
+	ok
+}
+
+    
+Func IsMainSourceFile(){
+	return Prevfilename() = dragonvm_fileslist()[1]
+}
+
+
+func Substring (str,substr,n){
+	newstr=right(str,len(str)-n+1)
+	nr = substr(newstr, substr)
+	if nr = 0
+		return 0
+	else
+		return n + nr -1
+	ok
+}
+       
+       
+func Changestring (text, pos1, pos2, str){
+	string = left(text,pos1-1) + str + substr(text, pos2+1)
+	return string
+}
+
+
+Func MakeDir (cFolder){
+	if iswindows()
+		SystemSilent("mkdir " + cFolder)
+	else 
+		# -p :  parents, will also create all directories leading up to the given directory that do not exist already. 
+		#       If the given directory already exists, ignore the error.
+		SystemSilent("mkdir -p " + cFolder)
+	ok
+}
+	
+
+Func sortFirstSecond (aList, ind){
+	aList = sort(aList,ind)
+	for n=1 to len(alist)-1
+		for m=n to len(aList)-1 
+			if ind = 1 nr = 2 else nr = 1 ok
+			if alist[m+1][ind] = alist[m][ind] and alist[m+1][nr] < alist[m][nr]
+				temp = alist[m+1]
+				alist[m+1] = alist[m]
+				alist[m] = temp ok
+             end
+	end
+	return aList
+}
+
+Func Fsize(fh){
+	Fseek(fh,0,2)
+	size = Ftell(fh)
+	Fseek(fh,0,0)
+	return size
+}
+
+
+Func EpochTime(Date, Time){
+
+	arrayDate = split(Date, "/")
+	arrayTime = split(Time, ":")
+
+	Year = arrayDate[3] ; Month  = arrayDate[2] ; Day    = arrayDate[1]
+	Hour = arrayTime[1] ; Minute = arrayTime[2] ; Second = arrayTime[3]
+
+	cDate1    = Day +"/"+ Month +"/"+ Year
+	cDate2    = "01/01/" + Year
+	DayOfYear = DiffDays( cDate1, cDate2)
+
+	### Formula
+	tm_sec  = Second    * 1
+	tm_min  = Minute    * 60
+	tm_hour = Hour      * 3600
+	tm_yday = DayOfYear * 86400
+	tm_year = Year      - 1900
+
+	tm_year1 =         ( tm_year -  70)          * 31536000
+	tm_year2 = ( floor(( tm_year -  69) /   4 )) * 86400
+	tm_year3 = ( floor(( tm_year -   1) / 100 )) * 86400
+	tm_year4 = ( floor(( tm_year + 299) / 400 )) * 86400
+
+	### Result
+	EpochSec = tm_sec + tm_min + tm_hour + tm_yday + tm_year1 + tm_year2 - tm_year3 + tm_year4
+
+	return EpochSec
+}
+
+Func TrimLeft(cStr){
+	$tab   = char(09)
+	$space = char(32)
+	index  = 1
+	while cStr[index] = $space or cStr[index] = $tab
+		index++
+	end  
+	cStr = substr(cStr, index, len(cStr) - index + 1)
+	return cStr    
+} 
+
+
+Func TrimRight(cStr){
+	$tab   = char(09)
+	$space = char(32)
+	index  = len(cStr)
+	while cStr[index] = $space or cStr[index] = $tab
+		index--
+	end    
+	cStr = substr(cStr, 1, index)
+	return cStr    
+} 
+
+
+Func TrimAll(cStr){
+	$tab   = char(09)
+	$space = char(32)
+	$empty = ""
+	cStr = substr(cStr, $space, $empty)
+	cStr = substr(cStr, $tab,   $empty)
+	return cStr
+}
+
+
+
+Func chomp(cStr){
+	cStr = substr(cStr, newline, "" )
+	return cStr
+}
+
+
+func SystemCmd(cmd){
+	System(cmd + "> cmd.txt")
+	cStr = read("cmd.txt")
+	# delete result file after get value
+	OSDeleteFile("cmd.txt")
+	if right(cStr,1) = newline
+		cStr = left(cStr,len(cStr)-1)
+	ok
+	return cStr 
+}
+
+
+func ListAllFiles (cPath,cExt){
+	if left(cExt,2) = "*."
+		cExt = substr(cExt,3)
+	ok
+	aList = dir(cPath)
+	return ListAllFiles_process(cPath,aList,cExt)
+}
+
+func ListAllFiles_Process (cPath,aList,cExt){
+	aOutput = []
+	for aSub : aList 
+		# Workaround a bug in Linux, when aSub[2] = True for files (not folders)
+			if ! isWindows()
+				if aSub[1] = "." or aSub[1] = ".."
+					loop
+				ok
+				if aSub[2] and substr(aSub[1],".")
+					aSub[2] = 0
+				ok
+			ok
+		if aSub[2] # Directory
+			cNewPath = cPath + "/" + aSub[1]
+			aSubOutput = listAllFiles(cNewPath,cExt)
+			for item : aSubOutput 
+				aOutput + item
+			end
+		else		# File
+			if cExt != NULL
+				if right(aSub[1],len(cExt)+1) = "."+cExt 
+					aOutput + ( cPath + "/" + aSub[1] )
+				ok
+			else
+				aOutput + ( cPath + "/" + aSub[1] )
+			ok
+		ok
+	end
+	return aOutput
+}
+
+
+func SystemSilent (cCmd){
+	if isWindows()
+		system(cCmd + C_WINDOWS_NOOUTPUTNOERROR)
+	else 
+		system(cCmd + C_LINUX_NOOUTPUTNOERROR)
+	ok
+}
+
+
+
+func OSCreateOpenFolder (cFolder){
+	MakeDir(cFolder)
+	chdir(cFolder)
+}
+
+
+func OSCopyFolder (cParentFolder,cFolder){
+	cCurrentFolder = currentdir()
+	OSCreateOpenFolder(cFolder)
+	if isWindows()
+		systemsilent("xcopy /e " + cParentFolder + cFolder)
+	else 
+		systemsilent("cp -R " + cParentFolder + cFolder + " ./")
+	ok
+	chdir(cCurrentFolder)
+}
+
+
+
+func OSDeleteFolder (cFolder ){
+	if isWindows() 
+		systemSilent("rd /s /q " + cFolder)
+	else
+		systemSilent("rm -r " + cFolder)
+	ok
+}
+
+
+func OSCopyFile (cFile){
+	if isWindows()
+		cFile = substr(cFile,"/","\")
+		systemSilent("copy " + cFile)
+	else 
+		systemSilent("cp " + cFile + " .")
+	ok
+}
+
+
+func OSDeleteFile (cFile){
+	if isWindows() 
+		systemSilent("del " + cFile)
+	else 
+		systemSilent("rm " + cFile)
+	ok
+}
+
+
+func OSRenameFile (cOldFile,cNewFile){
+	if isWindows()
+		systemSilent("rename " + cOldFile + " " + cNewFile)
+	elif isLinux() or isMacosx()
+		systemSilent("mv " + cOldFile + " " + cNewFile)
+	ok
+}
+
+
+func List2Code (aList){
+	if ! isList(aList) raise(C_ERROR_EXPECTLIST) return ok
+	cTabs = Copy(Char(9),List2CodeTabsCounter)
+	cCode = cTabs+"["+Windowsnl()
+	lStart = True
+	List2CodeTabsCounter++
+	cTabs = Copy(Char(9),List2CodeTabsCounter)
+	for item : aList 
+		if !lStart 
+			cCode += ","+Windowsnl()
+		else 
+			lStart = False
+		ok
+		if isString(item)
+			item2 = item
+			item2 = substr(item2,'"','"+char(34)+"') 
+			cCode += cTabs+'"' + item2 + '"' 
+		elif isnumber(item)
+			cCode += (cTabs+""+item)
+		elif islist(item)
+			cCode += List2Code(item)
+		ok
+	end
+	List2CodeTabsCounter--
+	cTabs = Copy(Char(9),List2CodeTabsCounter)
+	cCode += windowsnl()+cTabs+"]"
+	return cCode
+
+}
+
+
+
+func Str2ASCIIList (cStr){
+	if not isString(cStr)
+		raise("Type Error in Str2ASCIIList() function")
+	ok
+	aList = []
+	for cChar : cStr 
+		aList + ASCII(cChar)
+	end 
+	return aList 
+}
+
+
+func ASCIIList2Str (aList ){
+	if not isList(aList)
+		raise("Type Error in ASCIIList2Str() function")
+	ok
+	cStr = ""
+	for nNum : aList 
+		if not isNumber(nNum)
+			raise("Type Error in ASCIIList2Str() function - Item is not a number!")
+		ok
+		cStr += char(nNum)
+	end
+	return cStr 
+}
+
+
+func timeInfo( item ){
+        return timelist()[ aTimeInfoMap[item] ]
+       }
+
+
+
+func IsBetween (x, min, max){ return (x >= min) AND (x <= max) }
+
+
+func IsListContainsItems (aParent,aChild){
+	for item : aChild if not find(aParent,item) return false ok end return True
+}
+
+
+
+func RandomList(aInput){
+	if ! isList(aInput) raise(C_ERROR_EXPECTLIST) return ok
+	if len(aInput) <= 0  raise(C_ERROR_EMPTYLIST) return ok
+	aOutput = []
+	while len(aInput) > 1
+		# Get Random Item 
+			nIndex = random(len(aInput)-1)
+			nIndex++
+		# Add the selected item to the aOutput list
+			aOutput + aInput[nIndex]
+		# Remove the selected item from the original list
+			del(aInput,nIndex)
+	end
+	# Add the last item 	
+		aOutput + aInput[1]
+	return aOutput
+}
+
+
+
+func RandomItem (aList){ 
+	if ! isList(aList) raise(C_ERROR_EXPECTLIST) return ok
+	if len(aList) <= 0  raise(C_ERROR_EMPTYLIST) return ok
+	return aList[ random( len(aList) - 1 ) + 1 ]
+}
